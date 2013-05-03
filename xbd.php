@@ -76,7 +76,6 @@ class xbd {
 	*/
 	function browser($a_browser = false, $a_version = false, $name = false, $d_name = false, $ret_ary = false)
 	{
-		//---added android [03.20.12]
 		$browser_list  = 'nokia motorola samsung sonyericsson blackberry iphone htc android ';
 		$browser_list .= 'flock firefox konqueror lobo msie netscape navigator mosaic netsurf lynx amaya omniweb ';
 		$browser_list .= 'googlebot googlebot-image feedfetcher-google gigabot msnbot thunderbird fennec minimo ';
@@ -215,12 +214,15 @@ class xbd {
 			
 			return $s_browser;
 		}
-		// --- added by xero [04.02.10]
-		$addr = $_SERVER['REMOTE_ADDR'];
+		if(getenv('HTTP_X_FORWARDED_FOR') != '') {
+			$addr = getenv('HTTP_X_FORWARDED_FOR');
+		} else {
+			$addr = getenv('REMOTE_ADDR');
+		}
 		$host = @gethostbyaddr($addr);
 		if($host == '') {
 			$host = "unknown";
-		} 
+		}
 
 		return array(
 			'browser' => $this_browser,
